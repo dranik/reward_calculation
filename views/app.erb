@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>Reward calculation</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha256-9mbkOfVho3ZPXfM7W8sV2SndrGDuh7wuyLjtsWeTI1Q=" crossorigin="anonymous" />
+    <style>
+      .grid.container:first-child {
+        margin-top: 3em;
+        margin-bottom: 1em;
+      }
+      .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body>
+
+    <% if flash[:alert] %>
+      <div class="ui middle aligned center aligned grid container">
+        <div class="ui fluid red segment">
+          <i class="ui exclamation circle red icon"></i>
+          <%= flash[:alert] %>
+        </div>
+      </div>
+    <% end %>
+    <div class="ui middle aligned center aligned grid container">
+      <div class="ui fluid segment">
+        <h1>Reward calculation</h1>
+        <p>Please, supply an events file. For more info read the repo's readme.</p>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <input
+              type="file"
+              onchange="this.form.submit()"
+              class="inputfile"
+              id="embedpollfileinput"
+              name="file" />
+
+            <label for="embedpollfileinput" class="ui teal center floated button">
+              <i class="ui upload icon"></i>
+              Upload data
+            </label>
+        </form>
+        <% unless @users.count.zero? %>
+          <form action="/" method="POST" enctype="multipart/form-data">
+            <input name="_method" type="hidden" value="delete" />
+            <button onchange="this.form.submit()" class="ui red center floated button">
+              <i class="ui delete icon"></i>
+              Flush
+            </button>
+          </form>
+          <table class="ui celled selectable right aligned table">
+            <tr>
+              <th class="left aligned">Name</th>
+              <th>Rating</th>
+            </tr>
+            <% @users.each do |user, rating| %>
+              <tr>
+                <td class="left aligned"><%= user %></td>
+                <td><%= rating %></td>
+              </tr>
+            <% end %>
+          </table>
+        <%end%>
+      </div>
+    </div>
+  </body>
+</html>
